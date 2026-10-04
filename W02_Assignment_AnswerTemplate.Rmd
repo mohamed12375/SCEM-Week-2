@@ -1,0 +1,345 @@
+---
+title: "Assignment 02 - Solutions"
+subtitle: "Statistical Computing and Empirical Methods"
+author: "YOUR_NAME (YOUR_STUDENT_ID)"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+> **A word of advice**
+>
+> Think of the SCEM labs like going to the gym: if you pay for gym membership but instead of working out you use a machine to lift the weights for you, you won’t get any results.
+>
+> Generative AI tools can easily provide answers to most of the questions below. But, before you try that, please notice that answering the specific questions below is not the point of this assignment. Instead, the questions are designed to give you the chance to develop a better understanding of estimation concepts and acquire certain _**statistical thinking**_ skills. These are essential skills for any data scientist to be even able to use Gen AI effectively when trying to solve anything non-trivial.
+>
+> A very important part of this learning involves not having the answers ready-made for you, but instead taking the time to actually search for the answer, trying something, getting it wrong, and trying again.
+>
+> So, make the best use of this session. The assignments are not marked, so it is much better to try them yourself even if you get incorrect answers (you’ll be able to correct yourself later when you receive feedback) than to have a perfect solution that's not your own.
+
+-----
+
+## IMPORTANT NOTES: 
+- **DO NOT** change the code block names. Enter your solutions to each question into the predefined code blocks. 
+
+---
+
+## Setup
+
+The code blocks below set up your session. The only think you should change in it is to replace `"ABCDEFG"` by your student ID number, which will be used as the seed for your random number generators.
+
+```{r ID, echo=FALSE, message=FALSE, warning=FALSE}
+## We will use your student ID as the seed for the random number generator.
+MY_STUDENT_ID <- "ABCDEFG" # <-- Replace "ABCDEFG" by your student ID number (as an integer, i.e., without quotes).
+```
+
+
+```{r Setup, echo=FALSE, message=FALSE, warning=FALSE}
+## DO NOT CHANGE ANYTHING IN THIS CODE BLOCK
+
+## Note: tidyverse includes:
+## ggplot2, dplyr, tidyr, readr, purrr, tibble, stringr, forcats, and lubridate.
+## Check https://www.tidyverse.org/packages/ for details
+
+allowed.packages <- c("tidyverse", "palmerpenguins")
+
+# This install packages if needed, and then loads them.
+for (i in seq_along(allowed.packages)){
+  if(!(allowed.packages[i] %in% installed.packages()[, 1])){
+    install.packages(allowed.packages[i])
+  }
+  library(allowed.packages[i], character.only = TRUE)
+}
+
+knitr::opts_chunk$set(echo = TRUE, collapse=TRUE)
+ignore <- runif(1) # To initialise the random number generator
+```
+```{r checkID, echo=FALSE}
+if(!is.numeric(MY_STUDENT_ID)){
+  stop("MY_STUDENT_ID MUST BE YOUR VALID (NUMERIC) student ID.")
+} else {
+  set.seed(MY_STUDENT_ID)
+}
+```
+
+## Data wrangling with dplyr
+
+### Exercise 1: 
+
+:::{#prompt .message style="color: blue;"}
+Create a new dataset containing only the variables corresponding to `species`, `sex`, `flipper length` and `body mass`. Attribute this new dataset to a variable called `penguins2`.
+
+:::
+
+
+```{r ex01}
+#' Required variables: penguins2 (data.frame)
+#' Required plots: 
+
+```
+
+### Exercise 2
+
+:::{#prompt .message style="color: blue;"}
+Create a new dataset containing only Gentoo penguins that are female and have a body mass greater than 5000 g. Call this dataset `penguins3`. How many observations satisfy all three conditions? Use `dim()` or `nrow()` to check.
+:::
+
+```{r ex02}
+#' Required variables: penguins3 (data.frame)
+#' Required plots: 
+
+
+
+```
+
+### Exercise 3
+
+:::{#prompt .message style="color: blue;"}
+Add a new variable called `bill_ratio` to `penguins3`, then display the first 2 rows of the resulting dataset.
+:::
+
+```{r ex03}
+#' Required variables: penguins3 (data.frame)
+#' Required plots: 
+
+
+
+```
+
+
+### Exercise 4
+
+:::{#prompt .message style="color: blue;"}
+Find the ten heaviest penguins in the `penguins` dataset. (**Hint**: functions `print()` or `head()` may be useful)
+:::
+
+```{r ex04}
+#' Required variables: 
+#' Required plots: 
+
+
+
+```
+
+
+### Exercise 5
+
+:::{#prompt .message style="color: blue;"}
+For each (island, species) pair, calculate the number of observations (use `n()`), the mean body mass, the standard deviation of body mass, and the mean flipper length. Store this summary in variable `penguins4`. Check `?mean` and `?sd` to learn how to ignore missing values when calculating the mean / standard deviation.
+:::
+
+```{r ex05}
+#' Required variables: penguins4 (data.frame)
+#' Required plots: 
+
+
+```
+
+
+### Exercise 6
+
+:::{#prompt .message style="color: blue;"}
+Create your summary dataframe `penguins5` as specified in the assignment specs.
+:::
+
+```{r ex06}
+#' Required variables: penguins5 (data.frame)
+#' Required plots: 
+
+
+
+```
+
+-----
+
+## Bayes' theorem
+
+### Exercise 7
+
+:::{#prompt .message style="color: blue;"}
+**a.** Write a small function called `bayes_positive()` that takes the prevalence, sensitivity and specificity as input parameters, and returns the posterior probability. A function skeleton is already available below.
+:::
+
+```{r ex07a}
+#' Required variables: bayes_positive (function)
+#' Required plots: 
+
+bayes_positive <- function(prevalence,
+                           sensitivity,
+                           specificity){
+  
+  # Enter the body of the function here and
+  # don't forget to return() your result.
+  
+  
+}
+
+
+
+```
+
+:::{#prompt .message style="color: blue;"}
+**b.** How does the posterior probability change if the disease is more common? Change the prevalence to `0.2` (i.e., 10 times larger than in the previous example) and check the posterior probability.
+:::
+
+```{r ex07b}
+#' Required variables: 
+#' Required plots: 
+
+
+```
+
+
+:::{#prompt .message style="color: blue;"}
+**c.** Now evaluate the posterior probability for the situations indicated in the assignment specs.
+:::
+
+```{r ex07c}
+#' Required variables: 
+#' Required plots: 
+
+# Input data frame
+X <- data.frame(prev = c(.01, .05, .2),
+                sens = c(.99, .95, .90),
+                spec = c(.99, .98, .95))
+
+# Now enter your solution below
+
+
+
+```
+
+### Exercise 8
+
+:::{#prompt .message style="color: blue;"}
+**a.** Use `dplyr` to answer the following questions directly from the simulated data:
+
+1. How many individuals tested positive?
+2. How many individuals had the disease?
+3. Among those with positive tests, how many actually had the disease?
+4. Estimate $P(D\mid +)$ 
+:::
+
+```{r ex08a}
+#' Required variables: 
+#' Required plots: 
+
+library(dplyr)
+
+# Generate simulated population
+prevalence  <- .05
+sensitivity <- .98
+specificity <- .95
+
+# simulated population
+population <- data.frame(person = 1:10000,
+                         disease = rbinom(10000,
+                                          size = 1,
+                                          prob = prevalence)) %>%
+  mutate(positive = ifelse(disease == 1,
+                           yes = rbinom(n(), 1, sensitivity),
+                           no  = rbinom(n(), 1, 1 - specificity)))
+
+# Now enter your solution below
+
+
+```
+
+:::{#prompt .message style="color: blue;"}
+**b.** Now modify the simulation so that the disease prevalence becomes **10%**, the sensitivity becomes **90%** and the specificity becomes **95%**. Repeat the calculations with these new parameters. How do these new results compare with the previous simulation?
+
+:::
+
+```{r ex08b}
+#' Required variables: 
+#' Required plots: 
+
+
+```
+
+-----
+
+## Point estimation of parameters
+
+### Exercise 9
+
+:::{#prompt .message style="color: blue;"}
+**a.** Estimate and plot the sampling distribution of the means of variable `body_mass_g` with `N=10` and `N = 100`, produce a histogram for each case, and check how the standard error of estimation (i.e., the standard deviation of the estimates) changes with the sample size.
+
+:::
+
+```{r ex09a}
+#' Required variables: 
+#' Required plots: TRUE
+
+# Generate the clean dataset
+penguins_clean <- penguins %>%
+  filter(!is.na(body_mass_g))
+
+# Now enter your solution below
+
+
+```
+
+
+:::{#prompt .message style="color: blue;"}
+**b.** Instead of the mean, now generate histograms with the sampling distribution of the _variance_ and of the 90% quantile (check function `quantile()` for this). Notice how not only the estimate values change (as expected), but the _shape_ of the distribution changes: different statistics may have distinct sampling distributions.
+
+:::
+
+```{r ex09b}
+#' Required variables: 
+#' Required plots: TRUE
+
+
+```
+
+
+## The Central Limit Theorem
+
+### Exercise 10
+:::{#prompt .message style="color: blue;"}
+Generate and visualise the sampling distribution of the means using `nobs=25`, `nobs=50` and `nobs=500`. 
+:::
+
+```{r ex10}
+#' Required variables: 
+#' Required plots: TRUE
+
+# Simulate the population
+mypop <- runif(100000)
+
+# Enter your solution below
+
+```
+
+
+### Exercise 11
+:::{#prompt .message style="color: blue;"}
+Now repeat the experiment according to the instructions in the assignment specs. 
+:::
+
+```{r ex11}
+#' Required variables: 
+#' Required plots: TRUE
+
+# Simulate the population
+mypop2 <- rexp(100000, rate = 1)
+
+# Enter your solution below
+
+```
+
+
+### Exercise 12
+:::{#prompt .message style="color: blue;"}
+Visualise both the data distribution and the sampling distribution of the means (use `nobs = 15`) of variable `flipper_length_mm` from the `penguins` dataset. Don't forget to `filter()` to remove missing values (`NA`) before you extract your sample means (check the earlier examples in this lab script).
+:::
+
+```{r ex12}
+#' Required variables: 
+#' Required plots: TRUE
+
+
+```

@@ -1,0 +1,111 @@
+---
+title: "Assignment 02 - Checkfile"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r ex01}
+#' Required variables: penguins2 (data.frame)
+#' Required plots: 
+
+```
+
+```{r ex02}
+#' Required variables: penguins3 (data.frame)
+#' Required plots: 
+
+```
+
+```{r ex03}
+#' Required variables: penguins3 (data.frame)
+#' Required plots: 
+
+```
+
+
+```{r ex04}
+#' Required variables: 
+#' Required plots: 
+
+```
+
+```{r ex05}
+#' Required variables: penguins4 (data.frame)
+#' Required plots: 
+
+```
+
+
+```{r ex06}
+#' Required variables: penguins5 (data.frame)
+#' Required plots: 
+
+```
+
+```{r ex07a}
+#' Required variables: bayes_positive (function)
+#' Required plots: 
+
+```
+
+```{r ex07b}
+#' Required variables: 
+#' Required plots: 
+
+
+```
+
+```{r ex07c}
+#' Required variables: 
+#' Required plots: 
+
+```
+
+```{r ex08a}
+#' Required variables: 
+#' Required plots: 
+
+```
+
+```{r ex08b}
+#' Required variables: 
+#' Required plots: 
+
+```
+
+```{r ex09a}
+#' Required variables: 
+#' Required plots: TRUE
+
+```
+
+
+```{r ex09b}
+#' Required variables: 
+#' Required plots: TRUE
+
+```
+
+
+```{r ex10}
+#' Required variables: 
+#' Required plots: TRUE
+
+```
+
+
+```{r ex11}
+#' Required variables: 
+#' Required plots: TRUE
+
+```
+
+
+```{r ex12}
+#' Required variables: 
+#' Required plots: TRUE
+
+
+```
