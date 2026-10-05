@@ -31,7 +31,7 @@ The code blocks below set up your session. The only think you should change in i
 
 ```{r ID, echo=FALSE, message=FALSE, warning=FALSE}
 ## We will use your student ID as the seed for the random number generator.
-MY_STUDENT_ID <- "ABCDEFG" # <-- Replace "ABCDEFG" by your student ID number (as an integer, i.e., without quotes).
+MY_STUDENT_ID <- 2974225 # <-- Replace "ABCDEFG" by your student ID number (as an integer, i.e., without quotes).
 ```
 
 
@@ -65,6 +65,22 @@ if(!is.numeric(MY_STUDENT_ID)){
 
 ## Data wrangling with dplyr
 
+```{r ex00}
+ head(penguins)
+#str(penguins)
+#penguins
+#class(penguins)
+#penguins_small <- select(penguins,
+#                         species,
+ #                        island,
+#                         body_mass_g)
+
+#penguins_small
+
+#penguins %>%
+#  select(species, island, body_mass_g)
+```
+
 ### Exercise 1: 
 
 :::{#prompt .message style="color: blue;"}
@@ -75,8 +91,9 @@ Create a new dataset containing only the variables corresponding to `species`, `
 
 ```{r ex01}
 #' Required variables: penguins2 (data.frame)
+penguins2 = select(penguins, species, sex, flipper_length_mm, body_mass_g)
 #' Required plots: 
-
+penguins2
 ```
 
 ### Exercise 2
@@ -87,8 +104,10 @@ Create a new dataset containing only Gentoo penguins that are female and have a 
 
 ```{r ex02}
 #' Required variables: penguins3 (data.frame)
+penguins3 = penguins %>% filter(species == "Gentoo", sex == "female", body_mass_g > 5000)
 #' Required plots: 
-
+nrow(penguins3)
+penguins3
 
 
 ```
@@ -101,10 +120,12 @@ Add a new variable called `bill_ratio` to `penguins3`, then display the first 2 
 
 ```{r ex03}
 #' Required variables: penguins3 (data.frame)
+penguins3 <- penguins3 %>%
+  mutate(bill_ratio = bill_length_mm / bill_depth_mm)
+
+head(penguins3, n = 2)
+
 #' Required plots: 
-
-
-
 ```
 
 
@@ -116,6 +137,9 @@ Find the ten heaviest penguins in the `penguins` dataset. (**Hint**: functions `
 
 ```{r ex04}
 #' Required variables: 
+penguins %>% arrange(desc(body_mass_g)) %>% 
+  head(n=10)
+
 #' Required plots: 
 
 
@@ -131,8 +155,15 @@ For each (island, species) pair, calculate the number of observations (use `n()`
 
 ```{r ex05}
 #' Required variables: penguins4 (data.frame)
-#' Required plots: 
 
+penguins4 =penguins %>% group_by(island, species) %>%
+  summarise(number = n(), 
+            mean_body_mass = mean(body_mass_g, na.rm = TRUE),
+            sd_body_mass = sd(body_mass_g, na.rm = TRUE),
+            mean_flipper_length = mean(flipper_length_mm, na.rm = TRUE))
+
+#' Required plots: 
+penguins4
 
 ```
 
@@ -147,7 +178,14 @@ Create your summary dataframe `penguins5` as specified in the assignment specs.
 #' Required variables: penguins5 (data.frame)
 #' Required plots: 
 
-
+penguins5 = filter(penguins, sex == "female", !is.na(body_mass_g)) %>% 
+  group_by(species) %>% 
+  summarise(number_of_penguins = n(),
+            mean_body_mass = mean(body_mass_g),
+            mean_bill_length = mean(bill_length_mm),
+            mean_bill_depth_mm = mean(bill_depth_mm),
+            mean_flipper_length_mm = mean(flipper_length_mm),)
+penguins5
 
 ```
 
@@ -169,11 +207,17 @@ bayes_positive <- function(prevalence,
                            sensitivity,
                            specificity){
   
-  # Enter the body of the function here and
-  # don't forget to return() your result.
+  p_positive <- sensitivity * prevalence + (1 - specificity) * (1 - prevalence)
+  
+  posterior <- sensitivity * prevalence / p_positive
+
+  posterior
   
   
 }
+
+bayes_positive(prevalence = 0.02, sensitivity = 0.95, specificity = 0.98)
+
 
 
 
@@ -186,6 +230,7 @@ bayes_positive <- function(prevalence,
 ```{r ex07b}
 #' Required variables: 
 #' Required plots: 
+bayes_positive(prevalence = 0.2, sensitivity = 0.95, specificity = 0.98)
 
 
 ```
@@ -206,6 +251,8 @@ X <- data.frame(prev = c(.01, .05, .2),
 
 # Now enter your solution below
 
+results <- mapply(bayes_positive, X$prev, X$sens, X$spec)
+print(results)
 
 
 ```
@@ -242,7 +289,21 @@ population <- data.frame(person = 1:10000,
                            no  = rbinom(n(), 1, 1 - specificity)))
 
 # Now enter your solution below
+population %>%
+  filter(positive == 1) %>%             # Isolate only positive cases
+  summarise(n())
 
+population %>%
+  filter(disease == 1) %>%             # Isolate only positive cases
+  summarise(n())
+
+population %>%
+  filter(positive == 1, disease == 1) %>%             # Isolate only positive cases
+  summarise(n())
+
+population %>%
+  filter(positive == 1) %>%             # Isolate only positive cases
+  summarise(mean(disease == 1))
 
 ```
 
@@ -255,6 +316,37 @@ population <- data.frame(person = 1:10000,
 #' Required variables: 
 #' Required plots: 
 
+
+# Generate simulated population
+prevalence  <- .10
+sensitivity <- .90
+specificity <- .95
+
+# simulated population
+population <- data.frame(person = 1:10000,
+                         disease = rbinom(10000,
+                                          size = 1,
+                                          prob = prevalence)) %>%
+  mutate(positive = ifelse(disease == 1,
+                           yes = rbinom(n(), 1, sensitivity),
+                           no  = rbinom(n(), 1, 1 - specificity)))
+
+# Now enter your solution below
+population %>%
+  filter(positive == 1) %>%             # Isolate only positive cases
+  summarise(n())
+
+population %>%
+  filter(disease == 1) %>%             # Isolate only positive cases
+  summarise(n())
+
+population %>%
+  filter(positive == 1, disease == 1) %>%             # Isolate only positive cases
+  summarise(n())
+
+population %>%
+  filter(positive == 1) %>%             # Isolate only positive cases
+  summarise(mean(disease == 1))
 
 ```
 
@@ -279,7 +371,75 @@ penguins_clean <- penguins %>%
 
 # Now enter your solution below
 
+sample_mean_distribution <- function(data, variable, nobs = 10, nrep = 1000) {
 
+
+  sample_means <- map_dbl(.x = 1:nrep,
+                          .f = \(i){
+                            penguins_clean %>%
+                              slice_sample(n = nobs) %>%
+                              summarise(mean = mean(body_mass_g)) %>%
+                              pull(mean)})
+  
+  # Display the first few estimates
+  # Notice that every sample produces a slightly different estimate.
+  head(sample_means)
+  
+  hist(sample_means, breaks = 25,
+       col = "lightblue",
+       main = "Sampling distribution of the sample mean",
+       xlab = "Observed sample mean",
+       las = 1)
+  
+    return(sample_means)
+}
+
+means10 <- sample_mean_distribution(
+  data = penguins_clean,
+  variable = body_mass_g,
+  nobs = 10,
+  nrep = 1000
+)
+
+means100 <- sample_mean_distribution(
+  data = penguins_clean,
+  variable = body_mass_g,
+  nobs = 100,
+  nrep = 1000
+)
+
+sd(means10)
+sd(means100)
+
+sample_variance_distribution <- function(data, variable, nobs = 10, nrep = 1000) {
+
+
+  sample_variances <- map_dbl(.x = 1:nrep,
+                          .f = \(i){
+                            penguins_clean %>%
+                              slice_sample(n = nobs) %>%
+                              summarise(var = var(body_mass_g)) %>%
+                              pull(var)})
+  
+  # Display the first few estimates
+  # Notice that every sample produces a slightly different estimate.
+  head(sample_variances)
+  
+  hist(sample_variances, breaks = 25,
+       col = "lightblue",
+       main = "Sampling distribution of the sample variance",
+       xlab = "Observed sample variance",
+       las = 1)
+  
+    return(sample_variances)
+}
+
+sample_means <- sample_variance_distribution(
+  data = penguins_clean,
+  variable = body_mass_g,
+  nobs = 100,
+  nrep = 1000
+)
 ```
 
 
@@ -292,7 +452,36 @@ penguins_clean <- penguins %>%
 #' Required variables: 
 #' Required plots: TRUE
 
+sample_quantile_distribution <- function(data, variable, nobs = 10, nrep = 1000) {
 
+
+  sample_variances <- map_dbl(.x = 1:nrep,
+                          .f = \(i){
+                            penguins_clean %>%
+                              slice_sample(n = nobs) %>%
+                              summarise(q90 = quantile(body_mass_g,
+                                                           probs = 0.9)) %>%
+                                  pull(q90)})
+  
+  # Display the first few estimates
+  # Notice that every sample produces a slightly different estimate.
+  head(sample_variances)
+  
+  hist(sample_variances, breaks = 25,
+       col = "lightblue",
+       main = "Sampling distribution of the sample variance",
+       xlab = "Observed sample variance",
+       las = 1)
+  
+    return(sample_variances)
+}
+
+sample_quantiles <- sample_quantile_distribution(
+  penguins_clean,
+  body_mass_g,
+  nobs = 10,
+  nrep = 1000
+)
 ```
 
 
@@ -312,6 +501,24 @@ mypop <- runif(100000)
 
 # Enter your solution below
 
+# sample size
+sample_distribution_of_means <- function(data, nobs = 5) {
+
+
+  means5 <- map_dbl(.x = 1:1000,
+                    .f = \(i){mean(sample(data, size = nobs))})
+  
+  hist(means5, breaks = 30,
+       col = "lightblue",
+       main = paste("Sample means n =", nobs),
+       xlab = "Sample mean",
+       las = 1)
+}
+
+sample_distribution_of_means(mypop, 25)
+sample_distribution_of_means(mypop, 50)
+sample_distribution_of_means(mypop, 500)
+
 ```
 
 
@@ -329,6 +536,12 @@ mypop2 <- rexp(100000, rate = 1)
 
 # Enter your solution below
 
+
+sample_distribution_of_means(mypop2, 5)
+sample_distribution_of_means(mypop2, 25)
+sample_distribution_of_means(mypop2, 50)
+sample_distribution_of_means(mypop2, 100)
+
 ```
 
 
@@ -340,6 +553,27 @@ Visualise both the data distribution and the sampling distribution of the means 
 ```{r ex12}
 #' Required variables: 
 #' Required plots: TRUE
+#' 
+cleaned_penguins = penguins %>%
+  filter(!is.na(flipper_length_mm)) %>%
+  pull(flipper_length_mm)
 
+hist(cleaned_penguins, breaks = 30,
+     col = "lightblue",
+     main = "Distribution of flipper lengths",
+     xlab = "Flipper length (mm)",
+     las = 1)
+
+
+means5 <- map_dbl(.x = 1:1000,
+                    .f = \(i){mean(sample(cleaned_penguins, size = 15, replace = TRUE))})
+
+
+  
+hist(means5, breaks = 30,
+     col = "lightblue",
+     main = paste("Sample means n =", 15),
+     xlab = "Sample mean",
+     las = 1)
 
 ```

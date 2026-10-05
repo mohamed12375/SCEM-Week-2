@@ -35,4 +35,3 @@ mycheck <- consistency_checker(submission_path = submission_path,
 summary(mycheck)
 
 # print(mycheck) # <--- uncomment this if you want to inspect the raw data frame
-
